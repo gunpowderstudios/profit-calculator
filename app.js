@@ -2,7 +2,7 @@
   'use strict';
 
   const PRODUCTS = {
-    bod: { name: 'Bag of Dungeon', rrp: 44.99, vat: 20, make: 2.62, freight: 1.70, storage: 3.00 },
+    bod: { name: 'Bag of Dungeon', rrp: 44.99, vat: 20, make: 3.20, freight: 1.70, storage: 3.00 },
     bod2: { name: 'Bag of Dungeon 2 / Forest', rrp: 44.99, vat: 20, make: 3.42, freight: 1.70, storage: 3.00 },
     moonsDeluxe: { name: '7 Moons Deluxe', rrp: 44.99, vat: 20, make: 3.42, freight: 1.70, storage: 3.00 },
     moonsBase: { name: '7 Moons Base', rrp: 44.99, vat: 20, make: 2.55, freight: 1.70, storage: 3.00 },
@@ -105,7 +105,8 @@
       const shippingPerGame = num('distShippingUnit');
 
       revenueExVat = rrpVat.exVat * (1 - discount);
-      vat = rrpVat.vat;
+      const distributorGross = grossPrice * (1 - discount);
+      vat = $('ignoreVat').checked ? 0 : distributorGross - revenueExVat;
       channelCosts = {
         'Delivery / game': shippingPerGame,
         'Returns / credit allowance': revenueExVat * returns,
