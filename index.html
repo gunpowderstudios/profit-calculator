@@ -16,7 +16,7 @@
         <h1>Profit Calculator</h1>
         <p class="lede">See what is really left on each game after product costs, VAT and channel fees.</p>
       </div>
-      <div class="version">v1.2</div>
+      <div class="version">v1.3</div>
     </div>
   </header>
 
@@ -147,19 +147,19 @@
           <article class="metric-card"><span>Revenue ex VAT</span><strong id="metricRevenue">£0.00</strong><small id="metricRevenueNote">Your actual sales revenue</small></article>
           <article class="metric-card"><span>Product costs</span><strong id="metricProductCosts">£0.00</strong><small>Factory → stocked unit</small></article>
           <article class="metric-card"><span>Channel costs</span><strong id="metricChannelCosts">£0.00</strong><small id="metricChannelNote">Distributor costs</small></article>
-          <article class="metric-card primary"><span>Contribution / game</span><strong id="metricContribution">£0.00</strong><small>Before company overheads</small></article>
-          <article class="metric-card"><span>Contribution margin</span><strong id="metricMargin">0.0%</strong><small>Contribution ÷ ex-VAT revenue</small></article>
+          <article class="metric-card primary"><span>Profit before overheads</span><strong id="metricContribution">£0.00</strong><small>Before company overheads</small></article>
+          <article class="metric-card"><span>Profit margin before overheads</span><strong id="metricMargin">0.0%</strong><small>Profit before overheads ÷ ex-VAT revenue</small></article>
           <article class="metric-card"><span>VAT inside customer price</span><strong id="metricVat">£0.00</strong><small>Shown for clarity, not as a margin cost</small></article>
         </div>
 
-        <div id="healthMessage" class="health-message neutral">Enter your costs to see the contribution clearly.</div>
+        <div id="healthMessage" class="health-message neutral">Enter your costs to see the profit before overheads clearly.</div>
 
         <div class="breakdown-wrap">
           <h3>Per-unit breakdown</h3>
           <table class="breakdown-table">
             <thead><tr><th>Line</th><th>£ / unit</th></tr></thead>
             <tbody id="breakdownBody"></tbody>
-            <tfoot><tr><th>Contribution</th><th id="breakdownContribution">£0.00</th></tr></tfoot>
+            <tfoot><tr><th>Profit before overheads</th><th id="breakdownContribution">£0.00</th></tr></tfoot>
           </table>
         </div>
       </div>
@@ -168,7 +168,7 @@
         <div class="side-block">
           <p class="section-kicker">MARGIN TARGET</p>
           <h3>What deal can we afford?</h3>
-          <label class="field"><span>Target contribution margin</span><div class="percent-input"><input id="targetMargin" type="number" min="0" max="95" step="1" value="30"><span>%</span></div></label>
+          <label class="field"><span>Target profit margin before overheads</span><div class="percent-input"><input id="targetMargin" type="number" min="0" max="95" step="1" value="30"><span>%</span></div></label>
           <div class="target-result">
             <span id="targetLabel">Maximum distributor discount</span>
             <strong id="targetValue">—</strong>
@@ -183,7 +183,7 @@
           <label class="field"><span>Reserve % of make + inbound freight + import duty</span><div class="percent-input"><input id="reservePct" type="number" min="0" max="200" step="5" value="100"><span>%</span></div></label>
           <dl class="mini-stats">
             <div><dt>Reserve / game</dt><dd id="reserveUnit">£0.00</dd></div>
-            <div><dt>Contribution after reserve</dt><dd id="cashAfterReserve">£0.00</dd></div>
+            <div><dt>Cash left after reserve</dt><dd id="cashAfterReserve">£0.00</dd></div>
           </dl>
           <p class="micro-note">This cash figure is useful for working-capital planning, but the reserve is not a second manufacturing expense on the same sale.</p>
         </div>
@@ -196,7 +196,7 @@
             <div><dt>Pallets needed</dt><dd id="orderPallets">1</dd></div>
             <div><dt>Delivery / game</dt><dd id="orderDeliveryUnit">£0.17</dd></div>
             <div><dt>Total revenue ex VAT</dt><dd id="orderRevenue">£0.00</dd></div>
-            <div><dt>Total contribution</dt><dd id="orderContribution">£0.00</dd></div>
+            <div><dt>Total profit before overheads</dt><dd id="orderContribution">£0.00</dd></div>
           </dl>
         </div>
       </aside>
@@ -206,7 +206,7 @@
       <h2>How to read this</h2>
       <div class="notes-grid">
         <div><strong>VAT</strong><p>Normally VAT is removed from the selling price to get your real ex-VAT revenue. Tick “Ignore VAT” when you deliberately want the entered price treated as ex-VAT / zero-rated for modelling.</p></div>
-        <div><strong>Contribution</strong><p>This is simply the money left from each sale after the game costs and selling costs have been taken off. It still has to help pay wages, marketing and the other costs of running the business.</p></div>
+        <div><strong>Profit before overheads</strong><p>This is the money left from each sale after the game costs and selling costs have been taken off. It is not the final company profit because it still has to help pay wages, marketing and the other general costs of running the business.</p></div>
         <div><strong>Distributor discount</strong><p>Do not add retailer and distributor margins again if the quoted discount already represents the total discount from RRP. UK pallet delivery is calculated from the actual order size and game-specific carton packing.</p></div>
         <div><strong>Cash reserve</strong><p>This is money you may want to keep back to replace the stock you have sold. We show it separately so you can see both the sale profit and the cash you want to protect for reordering.</p></div>
       </div>
