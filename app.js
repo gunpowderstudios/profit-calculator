@@ -73,6 +73,8 @@
 
     $('rrp').value = p.rrp.toFixed(2);
     $('vatRate').value = p.vat.toFixed(1);
+    $('ignoreVat').checked = false;
+    $('vatRate').disabled = false;
     $('makeCost').value = p.make.toFixed(2);
     $('inboundFreight').value = p.freight.toFixed(2);
     $('storageMisc').value = p.storage.toFixed(2);
@@ -111,9 +113,10 @@
   }
 
   function baseVat(price) {
+    if ($('ignoreVat').checked) return { rate: 0, exVat: price, vat: 0, ignored: true };
     const rate = num('vatRate', 0, 100) / 100;
     const exVat = rate > 0 ? price / (1 + rate) : price;
-    return { rate, exVat, vat: price - exVat };
+    return { rate, exVat, vat: price - exVat, ignored: false };
   }
 
   function palletLogistics() {
@@ -222,7 +225,7 @@
 
   function targetDeal(calc) {
     const target = num('targetMargin', 0, 95) / 100;
-    const v = num('vatRate', 0, 100) / 100;
+    const v = $('ignoreVat').checked ? 0 : num('vatRate', 0, 100) / 100;
 
     if (calc.channel === 'distributor') {
       const rrpExVat = v > 0 ? num('rrp') / (1 + v) : num('rrp');
@@ -319,7 +322,7 @@
 
   function saveState() {
     try {
-      const state = { product: $('productSelect').value, channel: currentChannel(), values: {} };
+      const state = { product: $('productSelect').value, channel: currentChannel(), ignoreVat: $('ignoreVat').checked, values: {} };
       inputs.forEach(id => { state.values[id] = $(id).value; });
       localStorage.setItem('gunpowder-profit-calculator-v2', JSON.stringify(state));
     } catch (_) { }
@@ -332,6 +335,8 @@
       const state = JSON.parse(raw);
       if (PRODUCTS[state.product]) $('productSelect').value = state.product;
       Object.entries(state.values || {}).forEach(([id, value]) => { if ($(id)) $(id).value = value; });
+      $('ignoreVat').checked = Boolean(state.ignoreVat);
+      $('vatRate').disabled = $('ignoreVat').checked;
       const radio = document.querySelector(`input[name="channel"][value="${state.channel}"]`);
       if (radio) radio.checked = true;
       const p = PRODUCTS[$('productSelect').value];
@@ -350,5 +355,9 @@
   $('productSelect').addEventListener('change', (e) => applyProduct(e.target.value));
   document.querySelectorAll('input[name="channel"]').forEach(el => el.addEventListener('change', () => switchChannel(currentChannel())));
   inputs.forEach(id => $(id).addEventListener('input', calculate));
+  $('ignoreVat').addEventListener('change', () => {
+    $('vatRate').disabled = $('ignoreVat').checked;
+    calculate();
+  });
   $('resetBtn').addEventListener('click', () => applyProduct($('productSelect').value));
 })();
