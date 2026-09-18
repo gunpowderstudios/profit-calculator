@@ -359,5 +359,42 @@
     $('vatRate').disabled = $('ignoreVat').checked;
     calculate();
   });
-  $('resetBtn').addEventListener('click', () => applyProduct($('productSelect').value));
+  function resetCurrentProduct() {
+    const channel = currentChannel();
+    try { localStorage.removeItem('gunpowder-profit-calculator-v2'); } catch (_) { }
+
+    applyProduct($('productSelect').value);
+
+    $('distDiscount').value = '60';
+    $('distReturns').value = '0';
+    $('distOther').value = '0';
+
+    $('amazonReferral').value = '15';
+    $('amazonFba').value = '0';
+    $('amazonInbound').value = '0';
+    $('amazonStorage').value = '0';
+    $('amazonAds').value = '0';
+    $('amazonReturns').value = '0';
+    $('amazonOther').value = '0';
+    $('amazonMonthlyPlan').value = '25';
+    $('amazonMonthlyUnits').value = '500';
+
+    $('directPaymentPct').value = '0';
+    $('directPaymentFixed').value = '0';
+    $('directPostage').value = '0';
+    $('directAds').value = '0';
+    $('directReturns').value = '0';
+    $('directOther').value = '0';
+
+    $('targetMargin').value = '30';
+    $('reservePct').value = '100';
+    $('ignoreVat').checked = false;
+    $('vatRate').disabled = false;
+
+    const radio = document.querySelector(`input[name="channel"][value="${channel}"]`);
+    if (radio) radio.checked = true;
+    switchChannel(channel);
+  }
+
+  $('resetBtn').addEventListener('click', resetCurrentProduct);
 })();
