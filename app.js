@@ -11,7 +11,7 @@
     legends2: { name: 'Legends 2', rrp: 29.99, vat: 20, make: 1.69, freight: 0.75, storage: 1.50 },
     rabbito: { name: 'Rabbito V2', rrp: 34.99, vat: 20, make: 3.27, freight: 2.20, storage: 3.60 },
     cheese: { name: 'Cheese', rrp: 17.99, vat: 20, make: 2.31, freight: 0.75, storage: 1.50 },
-    book: { name: 'Book of Dungeon', rrp: 16.99, vat: 0, make: 0, freight: 0, storage: 0, needsCosts: true },
+    book: { name: 'Book of Dungeon', rrp: 16.99, vat: 0, make: 3.12, freight: 0, storage: 0, needsCosts: true },
     custom: { name: 'Custom product', rrp: 0, vat: 20, make: 0, freight: 0, storage: 0 }
   };
 
@@ -57,7 +57,7 @@
 
     $('presetWarning').classList.toggle('hidden', !p.needsCosts);
     $('presetWarning').textContent = p.needsCosts
-      ? 'Book of Dungeon has its RRP and 0% VAT preset, but its print / landed costs are not in the Gardners game-cost sheet. Add the real unit costs before relying on the result.'
+      ? 'Book of Dungeon has a £3.12 make cost preset. Freight, storage and other landed costs are still editable and should be added if they apply.'
       : '';
 
     calculate();
@@ -334,7 +334,7 @@
       const p = PRODUCTS[$('productSelect').value];
       $('presetWarning').classList.toggle('hidden', !p?.needsCosts);
       if (p?.needsCosts) {
-        $('presetWarning').textContent = 'Book of Dungeon has its RRP and 0% VAT preset, but its print / landed costs are not in the Gardners game-cost sheet. Add the real unit costs before relying on the result.';
+        $('presetWarning').textContent = 'Book of Dungeon has a £3.12 make cost preset. Freight, storage and other landed costs are still editable and should be added if they apply.';
       }
 
       switchChannel(currentChannel());
