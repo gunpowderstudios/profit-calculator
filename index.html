@@ -16,7 +16,7 @@
         <h1>Profit Calculator</h1>
         <p class="lede">See what is really left on each game after product costs, VAT and channel fees.</p>
       </div>
-      <div class="version">v1.0</div>
+      <div class="version">v1.1</div>
     </div>
   </header>
 
@@ -84,12 +84,15 @@
         </div>
         <div class="form-grid channel-grid">
           <label class="field emphasis"><span>Discount requested off RRP</span><div class="percent-input"><input id="distDiscount" type="number" min="0" max="100" step="0.1" value="60"><span>%</span></div></label>
-          <label class="field"><span>Order quantity</span><input id="distQty" type="number" min="1" step="1" value="200"></label>
-          <label class="field"><span>Pallet delivery cost</span><div class="money-input"><span>£</span><input id="palletCost" type="number" min="0" step="0.01" value="50"></div></label>
-          <label class="field"><span>Units on pallet</span><input id="unitsPerPallet" type="number" min="1" step="1" value="200"></label>
+          <label class="field"><span>Order quantity</span><input id="distQty" type="number" min="1" step="1" value="480"></label>
+          <label class="field"><span>UK pallet delivery</span><div class="money-input"><span>£</span><input id="palletCost" type="number" min="0" step="0.01" value="80"></div></label>
+          <label class="field"><span>Games per master carton</span><input id="gamesPerCarton" type="number" min="0" step="1" value="12"></label>
+          <label class="field"><span>Cartons per pallet</span><input id="cartonsPerPallet" type="number" min="0" step="1" value="40"></label>
           <label class="field"><span>Returns / credit allowance</span><div class="percent-input"><input id="distReturns" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label>
           <label class="field"><span>Other distributor cost / unit</span><div class="money-input"><span>£</span><input id="distOther" type="number" min="0" step="0.01" value="0"></div></label>
         </div>
+        <p id="packDataNote" class="micro-note"></p>
+        <div id="palletSummary" class="pallet-summary" aria-live="polite"></div>
       </div>
 
       <div id="amazonFields" class="channel-fields hidden">
@@ -188,7 +191,9 @@
           <p class="section-kicker">ORDER VIEW</p>
           <h3 id="orderTitle">Distributor order</h3>
           <dl class="mini-stats">
-            <div><dt>Units</dt><dd id="orderQtyResult">200</dd></div>
+            <div><dt>Units</dt><dd id="orderQtyResult">480</dd></div>
+            <div><dt>Pallets needed</dt><dd id="orderPallets">1</dd></div>
+            <div><dt>Delivery / game</dt><dd id="orderDeliveryUnit">£0.17</dd></div>
             <div><dt>Total revenue ex VAT</dt><dd id="orderRevenue">£0.00</dd></div>
             <div><dt>Total contribution</dt><dd id="orderContribution">£0.00</dd></div>
           </dl>
@@ -201,7 +206,7 @@
       <div class="notes-grid">
         <div><strong>VAT</strong><p>VAT is removed from the selling price to get your real ex-VAT revenue. Reclaimable VAT on business costs is not treated as a profit cost.</p></div>
         <div><strong>Contribution</strong><p>This is what remains after the product and sales-channel costs entered above. It still has to help pay salaries, marketing, software and other company overheads.</p></div>
-        <div><strong>Distributor discount</strong><p>Do not add retailer and distributor margins again if the quoted discount already represents the total discount from RRP.</p></div>
+        <div><strong>Distributor discount</strong><p>Do not add retailer and distributor margins again if the quoted discount already represents the total discount from RRP. UK pallet delivery is calculated from the actual order size and game-specific carton packing.</p></div>
         <div><strong>Cash reserve</strong><p>Keep restocking cash visible, but separate it from the accounting contribution so you can see both profitability and cash-flow safety.</p></div>
       </div>
       <p class="source-note">Preset game costs are based on the latest Gardners profitability figures supplied by Gunpowder Studios. Amazon's UK Toys &amp; Games referral fee default is 15%; FBA, storage, advertising and other fees should be replaced with current Seller Central figures for each SKU.</p>
