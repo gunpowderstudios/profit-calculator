@@ -51,6 +51,9 @@ h3 { margin-bottom: 8px; }
   width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; background: var(--input); padding: 10px 12px; outline: none;
 }
 .field input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,185,77,.12); }
+.inline-check { display: flex; align-items: center; gap: 8px; min-height: 28px; color: var(--muted); font-size: .78rem; font-weight: 650; cursor: pointer; }
+.inline-check input { width: 16px; min-height: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+.field input:disabled { opacity: .45; cursor: not-allowed; }
 .money-input, .percent-input { position: relative; }
 .money-input > span, .percent-input > span { position: absolute; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
 .money-input > span { left: 12px; }
