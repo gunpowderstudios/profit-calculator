@@ -236,8 +236,8 @@
       if (rrpExVat <= 0 || denom <= 0) return { label: 'Maximum distributor discount', value: 'Not achievable', note: 'The target margin is too high for the current returns allowance / costs.' };
       const requiredRevenue = fixedCost / denom;
       const maxDiscount = (1 - requiredRevenue / rrpExVat) * 100;
-      if (maxDiscount < 0) return { label: 'Maximum distributor discount', value: '0%', note: `Even at full ex-VAT RRP, the current costs do not reach a ${pct(target * 100)} contribution margin.` };
-      return { label: 'Maximum distributor discount', value: pct(Math.min(100, maxDiscount)), note: `Highest discount that still leaves about a ${pct(target * 100)} contribution margin for this order size.` };
+      if (maxDiscount < 0) return { label: 'Maximum distributor discount', value: '0%', note: `Even at full ex-VAT RRP, the current costs do not reach a ${pct(target * 100)} profit margin before overheads.` };
+      return { label: 'Maximum distributor discount', value: pct(Math.min(100, maxDiscount)), note: `Highest discount that still leaves about a ${pct(target * 100)} profit margin before overheads for this order size.` };
     }
 
     const grossFactor = 1 / (1 + v);
@@ -245,7 +245,7 @@
     const denom = grossFactor * (1 - target) - calc.variableRateGross;
     if (denom <= 0) return { label: 'Minimum selling price', value: 'Not achievable', note: 'Variable fees are too high for this target margin.' };
     const price = fixed / denom;
-    return { label: 'Minimum selling price', value: money(price), note: `Approximate inc-VAT selling price needed for a ${pct(target * 100)} contribution margin.` };
+    return { label: 'Minimum selling price', value: money(price), note: `Approximate inc-VAT selling price needed for a ${pct(target * 100)} profit margin before overheads.` };
   }
 
   function renderBreakdown(calc) {
@@ -283,7 +283,7 @@
 
     const health = $('healthMessage');
     health.className = 'health-message ' + (calc.contribution > 0 ? 'good' : calc.contribution < 0 ? 'bad' : 'neutral');
-    if (calc.contribution > 0) health.textContent = `${money(calc.contribution)} per game is left to contribute towards salaries, marketing and other company overheads.`;
+    if (calc.contribution > 0) health.textContent = `${money(calc.contribution)}  profit before overheads per game is left after the game and selling costs. This still has to help pay wages, marketing and other company overheads.`;
     else if (calc.contribution < 0) health.textContent = `This setup loses ${money(Math.abs(calc.contribution))} per game before company overheads.`;
     else health.textContent = 'This setup is at break-even before company overheads.';
 
