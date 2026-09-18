@@ -283,7 +283,7 @@
 
     const health = $('healthMessage');
     health.className = 'health-message ' + (calc.contribution > 0 ? 'good' : calc.contribution < 0 ? 'bad' : 'neutral');
-    if (calc.contribution > 0) health.textContent = `${money(calc.contribution)}  profit before overheads per game is left after the game and selling costs. This still has to help pay wages, marketing and other company overheads.`;
+    if (calc.contribution > 0) health.textContent = `${money(calc.contribution)} profit before overheads per game is left after the game and selling costs. This still has to help pay wages, marketing and other company overheads.`;
     else if (calc.contribution < 0) health.textContent = `This setup loses ${money(Math.abs(calc.contribution))} per game before company overheads.`;
     else health.textContent = 'This setup is at break-even before company overheads.';
 
