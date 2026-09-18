@@ -16,7 +16,7 @@
         <h1>Profit Calculator</h1>
         <p class="lede">See what is really left on each game after product costs, VAT and channel fees.</p>
       </div>
-      <div class="version">v1.1</div>
+      <div class="version">v1.2</div>
     </div>
   </header>
 
@@ -39,10 +39,11 @@
           <span>RRP / selling price incl. VAT</span>
           <div class="money-input"><span>£</span><input id="rrp" type="number" min="0" step="0.01"></div>
         </label>
-        <label class="field">
+        <div class="field">
           <span>VAT rate</span>
           <div class="percent-input"><input id="vatRate" type="number" min="0" max="100" step="0.1"><span>%</span></div>
-        </label>
+          <label class="inline-check"><input id="ignoreVat" type="checkbox"> Ignore VAT in calculations</label>
+        </div>
       </div>
 
       <div id="presetWarning" class="notice warning hidden" role="status"></div>
@@ -204,7 +205,7 @@
     <section class="panel notes-panel">
       <h2>How to read this</h2>
       <div class="notes-grid">
-        <div><strong>VAT</strong><p>VAT is removed from the selling price to get your real ex-VAT revenue. Reclaimable VAT on business costs is not treated as a profit cost.</p></div>
+        <div><strong>VAT</strong><p>Normally VAT is removed from the selling price to get your real ex-VAT revenue. Tick “Ignore VAT” when you deliberately want the entered price treated as ex-VAT / zero-rated for modelling.</p></div>
         <div><strong>Contribution</strong><p>This is what remains after the product and sales-channel costs entered above. It still has to help pay salaries, marketing, software and other company overheads.</p></div>
         <div><strong>Distributor discount</strong><p>Do not add retailer and distributor margins again if the quoted discount already represents the total discount from RRP. UK pallet delivery is calculated from the actual order size and game-specific carton packing.</p></div>
         <div><strong>Cash reserve</strong><p>Keep restocking cash visible, but separate it from the accounting contribution so you can see both profitability and cash-flow safety.</p></div>
