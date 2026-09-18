@@ -251,7 +251,12 @@
     $('metricChannelCosts').textContent = money(calc.channelTotal);
     $('metricContribution').textContent = money(calc.contribution);
     $('metricMargin').textContent = pct(calc.margin);
-    $('metricVat').textContent = money(calc.vat);
+    const ignoringVat = $('ignoreVat').checked;
+    $('metricVat').textContent = ignoringVat ? 'Ignored' : money(calc.vat);
+    $('vatMetricLabel').textContent = ignoringVat ? 'VAT ignored' : 'VAT inside customer price';
+    $('vatMetricNote').textContent = ignoringVat ? 'Prices are being treated as ex-VAT' : 'Shown for clarity, not as a margin cost';
+    $('vatMetricCard').classList.toggle('vat-ignored', ignoringVat);
+    $('vatIgnoredNote').classList.toggle('hidden', !ignoringVat);
     $('metricChannelNote').textContent = `${calc.label} costs`;
     $('channelBadge').textContent = calc.label;
 
