@@ -1,1 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Gunpowder Studios board game profit and margin calculator for Amazon, distributors and direct sales.">
+  <title>Gunpowder Studios Profit Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div>
+        <p class="eyebrow">GUNPOWDER STUDIOS</p>
+        <h1>Profit Calculator</h1>
+        <p class="lede">See what is really left on each game after product costs, VAT and channel fees.</p>
+      </div>
+      <div class="version">v1.0</div>
+    </div>
+  </header>
 
+  <main class="wrap app-shell">
+    <section class="panel setup-panel" aria-labelledby="setup-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">1. PRODUCT</p>
+          <h2 id="setup-title">Choose a game and check the real unit economics</h2>
+        </div>
+        <button class="ghost-button" id="resetBtn" type="button">Reset current product</button>
+      </div>
+
+      <div class="form-grid product-grid">
+        <label class="field field-wide">
+          <span>Product preset</span>
+          <select id="productSelect"></select>
+        </label>
+        <label class="field">
+          <span>RRP / selling price incl. VAT</span>
+          <div class="money-input"><span>£</span><input id="rrp" type="number" min="0" step="0.01"></div>
+        </label>
+        <label class="field">
+          <span>VAT rate</span>
+          <div class="percent-input"><input id="vatRate" type="number" min="0" max="100" step="0.1"><span>%</span></div>
+        </label>
+      </div>
+
+      <div id="presetWarning" class="notice warning hidden" role="status"></div>
+
+      <div class="subsection">
+        <div class="subsection-title">
+          <h3>Product costs per unit</h3>
+          <p>These costs follow the game from factory to your stock. VAT on reclaimable business costs is not included.</p>
+        </div>
+        <div class="form-grid cost-grid">
+          <label class="field"><span>Manufacturing</span><div class="money-input"><span>£</span><input id="makeCost" type="number" min="0" step="0.01"></div></label>
+          <label class="field"><span>China → UK freight</span><div class="money-input"><span>£</span><input id="inboundFreight" type="number" min="0" step="0.01"></div></label>
+          <label class="field"><span>Storage / handling / misc</span><div class="money-input"><span>£</span><input id="storageMisc" type="number" min="0" step="0.01"></div></label>
+          <label class="field"><span>Import duty / tariff</span><div class="money-input"><span>£</span><input id="importDuty" type="number" min="0" step="0.01"></div></label>
+          <label class="field"><span>Packaging / prep</span><div class="money-input"><span>£</span><input id="packaging" type="number" min="0" step="0.01"></div></label>
+          <label class="field"><span>Other product cost</span><div class="money-input"><span>£</span><input id="otherProductCost" type="number" min="0" step="0.01"></div></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="channel-title">
+      <div class="section-heading compact">
+        <div>
+          <p class="section-kicker">2. SALES CHANNEL</p>
+          <h2 id="channel-title">Where are you selling it?</h2>
+        </div>
+      </div>
+
+      <div class="channel-tabs" role="radiogroup" aria-label="Sales channel">
+        <label><input type="radio" name="channel" value="distributor" checked><span>Distributor / wholesale</span></label>
+        <label><input type="radio" name="channel" value="amazon"><span>Amazon UK</span></label>
+        <label><input type="radio" name="channel" value="direct"><span>Direct / website</span></label>
+      </div>
+
+      <div id="distributorFields" class="channel-fields">
+        <div class="channel-intro">
+          <h3>Distributor / wholesale</h3>
+          <p>Enter the total discount the distributor is asking for. For Gardners, test 60%, 55% or 50% here.</p>
+        </div>
+        <div class="form-grid channel-grid">
+          <label class="field emphasis"><span>Discount requested off RRP</span><div class="percent-input"><input id="distDiscount" type="number" min="0" max="100" step="0.1" value="60"><span>%</span></div></label>
+          <label class="field"><span>Order quantity</span><input id="distQty" type="number" min="1" step="1" value="200"></label>
+          <label class="field"><span>Pallet delivery cost</span><div class="money-input"><span>£</span><input id="palletCost" type="number" min="0" step="0.01" value="50"></div></label>
+          <label class="field"><span>Units on pallet</span><input id="unitsPerPallet" type="number" min="1" step="1" value="200"></label>
+          <label class="field"><span>Returns / credit allowance</span><div class="percent-input"><input id="distReturns" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label>
+          <label class="field"><span>Other distributor cost / unit</span><div class="money-input"><span>£</span><input id="distOther" type="number" min="0" step="0.01" value="0"></div></label>
+        </div>
+      </div>
+
+      <div id="amazonFields" class="channel-fields hidden">
+        <div class="channel-intro">
+          <h3>Amazon UK</h3>
+          <p>The Toys &amp; Games referral fee is currently 15%. FBA and advertising vary by product, so enter the figures from Seller Central.</p>
+        </div>
+        <div class="form-grid channel-grid">
+          <label class="field emphasis"><span>Amazon selling price incl. VAT</span><div class="money-input"><span>£</span><input id="amazonPrice" type="number" min="0" step="0.01"></div></label>
+          <label class="field"><span>Referral fee</span><div class="percent-input"><input id="amazonReferral" type="number" min="0" max="100" step="0.1" value="15"><span>%</span></div></label>
+          <label class="field"><span>FBA fulfilment fee / unit</span><div class="money-input"><span>£</span><input id="amazonFba" type="number" min="0" step="0.01" value="0"></div></label>
+          <label class="field"><span>Inbound to Amazon / unit</span><div class="money-input"><span>£</span><input id="amazonInbound" type="number" min="0" step="0.01" value="0"></div></label>
+          <label class="field"><span>Amazon storage / unit</span><div class="money-input"><span>£</span><input id="amazonStorage" type="number" min="0" step="0.01" value="0"></div></label>
+          <label class="field"><span>Advertising (ACOS-style)</span><div class="percent-input"><input id="amazonAds" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label>
+          <label class="field"><span>Returns allowance</span><div class="percent-input"><input id="amazonReturns" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label>
+          <label class="field"><span>Other Amazon fee / unit</span><div class="money-input"><span>£</span><input id="amazonOther" type="number" min="0" step="0.01" value="0"></div></label>
+          <label class="field"><span>Professional plan / month</span><div class="money-input"><span>£</span><input id="amazonMonthlyPlan" type="number" min="0" step="0.01" value="25"></div></label>
+          <label class="field"><span>Amazon units sold / month</span><input id="amazonMonthlyUnits" type="number" min="1" step="1" value="500"></label>
+        </div>
+        <p class="micro-note">Referral fees are calculated on the customer sales price. VAT charged on reclaimable Amazon business fees is not treated as an economic cost here.</p>
+      </div>
+
+      <div id="directFields" class="channel-fields hidden">
+        <div class="channel-intro">
+          <h3>Direct / website</h3>
+          <p>Use this for WooCommerce, Stripe checkout, events or any direct-to-customer sale.</p>
+        </div>
+        <div class="form-grid channel-grid">
+          <label class="field emphasis"><span>Customer price incl. VAT</span><div class="money-input"><span>£</span><input id="directPrice" type="number" min="0" step="0.01"></div></label>
+          <label class="field"><span>Payment fee</span><div class="percent-input"><input id="directPaymentPct" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label>
+          <label class="field"><span>Payment fixed fee</span><div class="money-input"><span>£</span><input id="directPaymentFixed" type="number" min="0" step="0.01" value="0"></div></label>
+          <label class="field"><span>Postage / fulfilment</span><div class="money-input"><span>£</span><input id="directPostage" type="number" min="0" step="0.01" value="0"></div></label>
+          <label class="field"><span>Advertising</span><div class="percent-input"><input id="directAds" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label>
+          <label class="field"><span>Returns allowance</span><div class="percent-input"><input id="directReturns" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></label>
+          <label class="field"><span>Other selling cost / unit</span><div class="money-input"><span>£</span><input id="directOther" type="number" min="0" step="0.01" value="0"></div></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-layout" aria-labelledby="results-title">
+      <div class="panel results-panel">
+        <div class="section-heading compact">
+          <div>
+            <p class="section-kicker">3. RESULT</p>
+            <h2 id="results-title">What is left per game?</h2>
+          </div>
+          <span id="channelBadge" class="channel-badge">Distributor</span>
+        </div>
+
+        <div class="metric-grid" aria-live="polite">
+          <article class="metric-card"><span>Revenue ex VAT</span><strong id="metricRevenue">£0.00</strong><small id="metricRevenueNote">Your actual sales revenue</small></article>
+          <article class="metric-card"><span>Product costs</span><strong id="metricProductCosts">£0.00</strong><small>Factory → stocked unit</small></article>
+          <article class="metric-card"><span>Channel costs</span><strong id="metricChannelCosts">£0.00</strong><small id="metricChannelNote">Distributor costs</small></article>
+          <article class="metric-card primary"><span>Contribution / game</span><strong id="metricContribution">£0.00</strong><small>Before company overheads</small></article>
+          <article class="metric-card"><span>Contribution margin</span><strong id="metricMargin">0.0%</strong><small>Contribution ÷ ex-VAT revenue</small></article>
+          <article class="metric-card"><span>VAT inside customer price</span><strong id="metricVat">£0.00</strong><small>Shown for clarity, not as a margin cost</small></article>
+        </div>
+
+        <div id="healthMessage" class="health-message neutral">Enter your costs to see the contribution clearly.</div>
+
+        <div class="breakdown-wrap">
+          <h3>Per-unit breakdown</h3>
+          <table class="breakdown-table">
+            <thead><tr><th>Line</th><th>£ / unit</th></tr></thead>
+            <tbody id="breakdownBody"></tbody>
+            <tfoot><tr><th>Contribution</th><th id="breakdownContribution">£0.00</th></tr></tfoot>
+          </table>
+        </div>
+      </div>
+
+      <aside class="panel side-panel">
+        <div class="side-block">
+          <p class="section-kicker">MARGIN TARGET</p>
+          <h3>What deal can we afford?</h3>
+          <label class="field"><span>Target contribution margin</span><div class="percent-input"><input id="targetMargin" type="number" min="0" max="95" step="1" value="30"><span>%</span></div></label>
+          <div class="target-result">
+            <span id="targetLabel">Maximum distributor discount</span>
+            <strong id="targetValue">—</strong>
+            <small id="targetNote">Based on the current cost inputs.</small>
+          </div>
+        </div>
+
+        <div class="side-block cashflow-block">
+          <p class="section-kicker">CASH FLOW</p>
+          <h3>Replenishment reserve</h3>
+          <p class="small-copy">This is deliberately separate from profit. It shows how much cash you may want to ring-fence to buy replacement stock.</p>
+          <label class="field"><span>Reserve % of make + inbound freight + import duty</span><div class="percent-input"><input id="reservePct" type="number" min="0" max="200" step="5" value="100"><span>%</span></div></label>
+          <dl class="mini-stats">
+            <div><dt>Reserve / game</dt><dd id="reserveUnit">£0.00</dd></div>
+            <div><dt>Contribution after reserve</dt><dd id="cashAfterReserve">£0.00</dd></div>
+          </dl>
+          <p class="micro-note">This cash figure is useful for working-capital planning, but the reserve is not a second manufacturing expense on the same sale.</p>
+        </div>
+
+        <div id="orderBlock" class="side-block order-block">
+          <p class="section-kicker">ORDER VIEW</p>
+          <h3 id="orderTitle">Distributor order</h3>
+          <dl class="mini-stats">
+            <div><dt>Units</dt><dd id="orderQtyResult">200</dd></div>
+            <div><dt>Total revenue ex VAT</dt><dd id="orderRevenue">£0.00</dd></div>
+            <div><dt>Total contribution</dt><dd id="orderContribution">£0.00</dd></div>
+          </dl>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel notes-panel">
+      <h2>How to read this</h2>
+      <div class="notes-grid">
+        <div><strong>VAT</strong><p>VAT is removed from the selling price to get your real ex-VAT revenue. Reclaimable VAT on business costs is not treated as a profit cost.</p></div>
+        <div><strong>Contribution</strong><p>This is what remains after the product and sales-channel costs entered above. It still has to help pay salaries, marketing, software and other company overheads.</p></div>
+        <div><strong>Distributor discount</strong><p>Do not add retailer and distributor margins again if the quoted discount already represents the total discount from RRP.</p></div>
+        <div><strong>Cash reserve</strong><p>Keep restocking cash visible, but separate it from the accounting contribution so you can see both profitability and cash-flow safety.</p></div>
+      </div>
+      <p class="source-note">Preset game costs are based on the latest Gardners profitability figures supplied by Gunpowder Studios. Amazon's UK Toys &amp; Games referral fee default is 15%; FBA, storage, advertising and other fees should be replaced with current Seller Central figures for each SKU.</p>
+    </section>
+  </main>
+
+  <footer class="wrap site-footer">Gunpowder Studios · Internal planning calculator</footer>
+</body>
+</html>
