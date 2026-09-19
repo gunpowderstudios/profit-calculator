@@ -226,6 +226,16 @@
 
   function renderBreakdown(calc) {
     const rows = [];
+
+    if (calc.channel === 'distributor') {
+      const discountPct = num('distDiscount', 0, 100);
+      const distributorPrice = calc.grossPrice * (1 - discountPct / 100);
+      rows.push({ label: 'RRP incl VAT', amount: calc.grossPrice, kind: 'reference' });
+      rows.push({ label: `Distributor price after ${pct(discountPct)} discount incl VAT`, amount: distributorPrice, kind: 'reference' });
+    } else {
+      rows.push({ label: 'Selling price incl VAT', amount: calc.grossPrice, kind: 'reference' });
+    }
+
     rows.push({ label: 'Revenue ex VAT', amount: calc.revenueExVat, kind: 'revenue' });
 
     Object.entries(calc.productParts).forEach(([label, amount]) => {
