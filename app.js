@@ -20,7 +20,7 @@
     'rrp','vatRate','makeCost','inboundFreight','storageMisc','importDuty','packaging','otherProductCost',
     'distDiscount','distQty','distShippingUnit','distReturns','distOther',
     'amazonPrice','amazonReferral','amazonFba','amazonInbound','amazonStorage','amazonAds','amazonReturns','amazonOther','amazonMonthlyPlan','amazonMonthlyUnits',
-    'directPrice','directPaymentPct','directPaymentFixed','directPostage','directAds','directReturns','directOther',
+    'directPrice','directQty','directPaymentPct','directPaymentFixed','directPostage','directAds','directReturns','directOther',
     'targetMargin','reservePct'
   ];
 
@@ -122,7 +122,7 @@
       const referral = num('amazonReferral', 0, 100) / 100;
       const ads = num('amazonAds', 0, 100) / 100;
       const returns = num('amazonReturns', 0, 100) / 100;
-      const monthlyUnits = Math.max(1, num('amazonMonthlyUnits', 1));
+      const monthlyUnits = Math.max(1, Math.round(num('amazonMonthlyUnits', 1)));
       const planAllocation = num('amazonMonthlyPlan') / monthlyUnits;
       variableRateGross = referral + ads + returns;
       fixedChannel = num('amazonFba') + num('amazonInbound') + num('amazonStorage') + num('amazonOther') + planAllocation;
@@ -137,6 +137,7 @@
         'Professional plan allocation': planAllocation,
         'Other Amazon fee': num('amazonOther')
       };
+      quantity = monthlyUnits;
       label = 'Amazon UK';
     } else {
       grossPrice = num('directPrice');
@@ -157,6 +158,7 @@
         'Returns allowance': grossPrice * returns,
         'Other selling cost': num('directOther')
       };
+      quantity = Math.max(1, Math.round(num('directQty', 1)));
       label = 'Direct / website';
     }
 
@@ -294,15 +296,25 @@
     $('cashAfterReserve').textContent = money(calc.contribution - reserve);
 
     const orderBlock = $('orderBlock');
-    const totalProfitBlock = $('totalProfitBlock');
     const isDistributor = calc.channel === 'distributor';
     orderBlock.classList.toggle('hidden', !isDistributor);
-    totalProfitBlock.classList.toggle('hidden', !isDistributor);
+
+    $('totalProfitQty').textContent = calc.quantity.toLocaleString('en-GB');
+    $('totalProfitValue').textContent = money(calc.contribution * calc.quantity);
+
+    if (calc.channel === 'amazon') {
+      $('totalProfitLead').textContent = 'Total monthly profit for';
+      $('totalProfitUnit').textContent = 'Amazon sales';
+    } else if (calc.channel === 'direct') {
+      $('totalProfitLead').textContent = 'Total profit for';
+      $('totalProfitUnit').textContent = 'direct sales';
+    } else {
+      $('totalProfitLead').textContent = 'Total profit for';
+      $('totalProfitUnit').textContent = 'games';
+    }
 
     if (isDistributor) {
       const shippingPerGame = num('distShippingUnit');
-      $('totalProfitQty').textContent = calc.quantity.toLocaleString('en-GB');
-      $('totalProfitValue').textContent = money(calc.contribution * calc.quantity);
       $('orderQtyResult').textContent = calc.quantity.toLocaleString('en-GB');
       $('orderDeliveryUnit').textContent = money(shippingPerGame);
       $('orderDeliveryTotal').textContent = money(shippingPerGame * calc.quantity);
@@ -386,6 +398,7 @@
     $('amazonMonthlyPlan').value = '25';
     $('amazonMonthlyUnits').value = '500';
 
+    $('directQty').value = '100';
     $('directPaymentPct').value = '0';
     $('directPaymentFixed').value = '0';
     $('directPostage').value = '0';
