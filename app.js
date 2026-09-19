@@ -294,10 +294,15 @@
     $('cashAfterReserve').textContent = money(calc.contribution - reserve);
 
     const orderBlock = $('orderBlock');
-    orderBlock.classList.toggle('hidden', calc.channel !== 'distributor');
+    const totalProfitBlock = $('totalProfitBlock');
+    const isDistributor = calc.channel === 'distributor';
+    orderBlock.classList.toggle('hidden', !isDistributor);
+    totalProfitBlock.classList.toggle('hidden', !isDistributor);
 
-    if (calc.channel === 'distributor') {
+    if (isDistributor) {
       const shippingPerGame = num('distShippingUnit');
+      $('totalProfitQty').textContent = calc.quantity.toLocaleString('en-GB');
+      $('totalProfitValue').textContent = money(calc.contribution * calc.quantity);
       $('orderQtyResult').textContent = calc.quantity.toLocaleString('en-GB');
       $('orderDeliveryUnit').textContent = money(shippingPerGame);
       $('orderDeliveryTotal').textContent = money(shippingPerGame * calc.quantity);
